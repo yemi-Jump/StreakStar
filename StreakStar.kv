@@ -1,0 +1,237 @@
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+
+ScreenManagement:
+    id: screen_manager
+
+    main_screen: main_screen
+    screen_one: screen_one
+    screen_two: screen_two
+
+    transition: SlideTransition()
+
+    MainScreen:
+        id: main_screen
+        name: "main"
+        manager: screen_manager
+
+    ScreenOne:
+        id: screen_one
+        name: "one"
+        manager: screen_manager
+
+    ScreenTwo:
+        id: screen_two
+        name: "two"
+        manager: screen_manager
+
+    ScreenThree:
+        id: screen_three
+        name: "three"
+        manager: screen_manager
+
+<MainScreen>:
+    id: main_screen
+    name: "main"
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "StreakStar"
+            font_size: 50
+        Button:
+            on_release: app.root.current = "one"
+            text: "Start"
+            font_size: 50
+
+<ScreenOne>:
+    id: screen_one
+    name: "one"
+    AnchorLayout:
+        anchor_x: 'left'
+        anchor_y: 'top'
+        Button:
+            on_release: app.root.current = "main"
+            text: "Menu"
+            size: 50, 25
+            size_hint: None, None
+            font_size: 18
+    GridLayout:
+        cols:1
+        rows:6
+        Label:
+            text: "Action"
+            font_size: 18
+            size: 600, 50
+            size_hint: None, None
+        TextInput:
+            id: action_entry
+            multiline: False
+            size: 600, 28
+            size_hint: None, None
+        Label:
+            text: "Grace Period (minutes)"
+            size: 600, 50
+            size_hint: None, None
+        TextInput:
+            id: delay_entry
+            input_filter: "int"
+            multiline: False
+            size_hint: None, None
+            size: 600, 28
+        Label:
+            size: 600, 50
+            size_hint: None, None
+            text: "Due every"
+
+        GridLayout:
+            cols:3
+            rows:2
+            Label:
+                text: "Day(s)"
+                size_hint: None, None
+                font_size: 18
+            Label:
+                text: "Hour(s)"
+                size_hint: None, None
+                font_size: 18
+            Label:
+                text: "Minute(s)"
+                size_hint: None, None
+                font_size: 18
+            TextInput:
+                id: day_entry
+                input_filter: "int"
+                multiline: False
+                size_hint: None, None
+                size: 200, 28
+            TextInput:
+                id: hour_entry
+                input_filter: "int"
+                multiline: False
+                size_hint: None, None
+                size: 200, 28
+            TextInput:
+                id: minute_entry
+                input_filter: "int"
+                multiline: False
+                size_hint: None, None
+                size: 200, 28
+    AnchorLayout:
+        anchor_x: "right"
+        anchor_y: "bottom"
+        Button:
+            text: "Add"
+            size: 50, 25
+            size_hint: None, None
+            font_size: 18
+            on_press: app.create()
+
+    AnchorLayout:
+        anchor_x: "left"
+        anchor_y: "bottom"
+        Button:
+            text: "Skip"
+            size: 50, 25
+            size_hint: None, None
+            font_size: 18
+            on_press: app.change_screen()
+
+
+<ScreenTwo>
+    id: screen_two
+    name: "two"
+    on_leave: app.restart()
+    on_enter: app.display_btn()
+
+    GridLayout:
+        cols: 2
+        rows: 1
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            GridLayout:
+                cols: 1
+                id: streak_zone
+                size_hint_y: None
+                height: self.minimum_height
+                row_force_default: True
+                row_default_height: 50
+        GridLayout:
+            cols: 1
+            rows: 2
+            AnchorLayout:
+                id: high_label
+                anchor_x: "center"
+                anchor_y: "center"
+            GridLayout:
+                cols: 3
+                rows: 1
+                AnchorLayout:
+                    anchor_x: "center"
+                    anchor_y: "center"
+                    Label:
+                        text: "Yellow - Early"
+                        size_hint: None, None
+                        font_size: 14
+                        color: 1,1,0,.95
+                AnchorLayout:
+                    anchor_x: "center"
+                    anchor_y: "center"
+                    Label:
+                        text: "Green - On Time"
+                        size_hint: None, None
+                        font_size: 14
+                        color: 0,1,0,.95
+                AnchorLayout:
+                    anchor_x: "center"
+                    anchor_y: "center"
+                    Label:
+                        text: "Red - Late"
+                        size_hint: None, None
+                        font_size: 14
+                        color: 1,0,0,.95
+
+    AnchorLayout:
+        anchor_x: "right"
+        anchor_y: "bottom"
+        Button:
+            text: "Add"
+            size: 50, 25
+            size_hint: None, None
+            font_size: 18
+            on_release: app.root.current = 'one'
+
+
+<ScreenThree>
+    id: screen_three
+    name: "three"
+    on_leave: my_box.canvas.clear()
+    on_leave: selected_streak.canvas.clear()
+    on_leave: del_space.canvas.clear()
+
+    GridLayout:
+        cols: 1
+        rows: 2
+        GridLayout:
+            cols: 3
+            rows: 1
+            AnchorLayout:
+                anchor_x: "left"
+                anchor_y: "top"
+                Button:
+                    text: "Back"
+                    size: 50, 25
+                    size_hint: None, None
+                    font_size: 18
+                    on_release: app.root.current = "two"
+            AnchorLayout:
+                id: selected_streak
+                anchor_x: "center"
+                anchor_y: "top"
+            AnchorLayout:
+                id: del_space
+                anchor_x: "right"
+                anchor_y: "top"
+        GridLayout:
+            cols: 1
+            id: my_box
