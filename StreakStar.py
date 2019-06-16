@@ -26,7 +26,7 @@ from kivy.graphics import *
 
 # The Streak itself ;)
 class Streak():
-    def __init__(self, action, delay, day, hour, minute, score=0, delta=0):
+    def __init__(self, action, delay, day, hour, minute, score=1, delta=0):
         self.action = action
         self.delay = delay
         self.day = day
@@ -175,9 +175,8 @@ class MainApp(App):
                     try:
                         self.highest = max((int(value['score']), key) for key, value in data.items())
                         self.high_string = "Highest Streak: \"%s\", with a streak of %s" % (self.highest[1], self.highest[0])
-
                         self.root.screen_two.ids.high_label.add_widget(Label(text=self.high_string,
-                                                                    size_hint=(None,None), font_size=20))
+                                                                        size_hint=(None,None), font_size=16))
                     except ValueError as error:
                         popup_2.open()
                         self.root.current = 'one'
@@ -369,7 +368,7 @@ class MainApp(App):
             # store streak attributes inside "streak.json"
             self.store.put(self.streak.action, action=self.streak.action,
                            delay=grace, seconds=total,
-                           score=0, delta=self.count, grace_sec=grace_sec)
+                           score=1, delta=self.count, grace_sec=grace_sec)
 
             self.change_screen(self)
         except ValueError as error:
